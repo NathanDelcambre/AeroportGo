@@ -13,4 +13,4 @@ __Broker MQTT__ : Mosquitto
 *Developpé par Cédric Diollot, Mathis Planchet et Nathan Delcambre*
 *Étudiant en Ingénierie logicielle à IMT Atlantique*
 
-![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Logo_IMT_Atlantique.svg/1200px-Logo_IMT_Atlantique.svg.png)
+![alt text]([https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Logo_IMT_Atlantique.svg/1200px-Logo_IMT_Atlantique.svg.png](https://www.imt-atlantique.fr/sites/default/files/Images/Ecole/charte-graphique/IMT_Atlantique_logo_RVB_Negatif_Baseline_400x272.png))
