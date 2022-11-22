@@ -3,10 +3,13 @@ package main
 import (
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
+
+var wg sync.WaitGroup
 
 func createClientOptions(brokerURI string, clientId string) *mqtt.ClientOptions {
 	opts := mqtt.NewClientOptions()
@@ -30,12 +33,13 @@ func connect(brokerURI string, clientId string) mqtt.Client {
 	return client
 }
 
-func test() bool {
-	return false
+func handler(client mqtt.Client, message mqtt.Message) {
+	fmt.Println(string(message.Payload()))
 }
 
 func main() {
-	client := connect("tcp://localhost:1883", "123")
-	token := client.Publish("a/b/c", 0, false, "Test golang")
-	token.Wait()
+	client := connect("tcp://localhost:1883", "1234")
+	client.Subscribe("a/b/c", 0, handler)
+	wg.Add(1)
+	wg.Wait()
 }
