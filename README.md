@@ -4,11 +4,11 @@
 
 Tous les composants logiciels sont développés en **Go**.
 
-**Protocoles utilisés** : MQTT & HTTP
+__Protocoles utilisés__ : MQTT & HTTP
 
-**Base de données NoSQL** : REDIS (ou MongoDB ou autre)
+__Base de données NoSQL__ : REDIS (ou MongoDB ou autre)
 
-**Broker MQTT** : Mosquitto
+__Broker MQTT__ : Mosquitto
 
-__Developpé par Cédric Diollot, Mathis Planchet et Nathan Delcambre
-__Étudiant en Ingénierie logicielle à IMT Atlantique
+**Developpé par Cédric Diollot, Mathis Planchet et Nathan Delcambre**
+**Étudiant en Ingénierie logicielle à IMT Atlantique**
