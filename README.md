@@ -12,3 +12,5 @@ __Broker MQTT__ : Mosquitto
 
 *Developpé par Cédric Diollot, Mathis Planchet et Nathan Delcambre*
 *Étudiant en Ingénierie logicielle à IMT Atlantique*
+
+![alt text](http://url/to/img.png)
