@@ -29,17 +29,17 @@ func connect(brokerURI string, clientId string) mqtt.Client {
 			log.Fatal(err)
 		}
 	}
-	fmt.Println("test")
+	fmt.Println("Connexion réussi !")
 	return client
 }
 
-func handler(client mqtt.Client, message mqtt.Message) {
+func messageHandler(client mqtt.Client, message mqtt.Message) {
 	fmt.Println(string(message.Payload()))
 }
 
 func main() {
 	client := connect("tcp://localhost:1883", "1234")
-	client.Subscribe("a/b/c", 0, handler)
+	client.Subscribe("a/b/c", 0, messageHandler)
 	wg.Add(1)
 	wg.Wait()
 }

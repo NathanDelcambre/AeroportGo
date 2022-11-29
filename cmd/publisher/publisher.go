@@ -26,12 +26,27 @@ func connect(brokerURI string, clientId string) mqtt.Client {
 			log.Fatal(err)
 		}
 	}
-	fmt.Println("test")
+	fmt.Println("Connexion réussi !")
 	return client
 }
 
 func main() {
 	client := connect("tcp://localhost:1883", "123")
-	token := client.Publish("a/b/c", 0, false, "Test golang")
-	token.Wait()
+
+	var start time.Time
+	var duration float64
+	var timeToWait time.Duration
+
+	for {
+		start = time.Now()
+		token := client.Publish("a/b/c", 0, false, "Test golang")
+		token.Wait()
+		token.Error()
+		fmt.Println("Message envoyé sur le topic : a/b/c")
+		duration = time.Now().Sub(start).Seconds()
+		timeToWait = time.Duration(10 - int(duration))
+		time.Sleep(timeToWait * time.Second)
+
+	}
+
 }
