@@ -64,7 +64,7 @@ func main() {
 	conn = redisConn.ConnectRedis(ipAndPortRedis)
 	defer redisConn.DisconnetRedis(conn)
 	client := connect("tcp://"+ipAndPortMosquitto, "1")
-	client.Subscribe("airports/#", 0, messageHandler)
+	client.Subscribe("airports/#", 2, messageHandler)
 	wg.Add(1)
 	wg.Wait()
 }
