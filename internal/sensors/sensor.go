@@ -16,7 +16,7 @@ type sensorType struct {
 	unit            string
 }
 
-var WindSensor sensorType = sensorType{"Wind", 0.0, 120, 4, 3, 0, "km/h"}
+var WindSensor sensorType = sensorType{"Wind", 0.0, 120, 4, 3, 0, "kt"}
 var HeatSensor sensorType = sensorType{"Heat", -10.0, 35, 0.6, 1.5, 0, "°C"}
 var PressureSensor sensorType = sensorType{"Pressure", 900, 1085.0, 0.8, 3, 0, "hPa"}
 
@@ -90,5 +90,4 @@ func (s *Sensor) GenerateNextData() float64 {
 		s.lastGeneratedValue += nextData
 		return s.lastGeneratedValue
 	}
-
 }
