@@ -2,51 +2,58 @@ package main
 
 import (
 	"fmt"
-	"log"
+	// "time"
+	"os"
+	"strconv"
 	"time"
+	mosquitto "archi.org/aeroportGo/internal/connection/mosquitto"
 
-	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
-func createClientOptions(brokerURI string, clientId string) *mqtt.ClientOptions {
-	opts := mqtt.NewClientOptions()
-	opts.AddBroker(brokerURI)
-
-	opts.SetClientID(clientId)
-	return opts
-}
-
-func connect(brokerURI string, clientId string) mqtt.Client {
-	fmt.Println("Tentative de connection (" + brokerURI + ", " + clientId + ")...")
-	opts := createClientOptions(brokerURI, clientId)
-	client := mqtt.NewClient(opts)
-	token := client.Connect()
-	for !token.WaitTimeout(3 * time.Second) {
-		if err := token.Error(); err != nil {
-			log.Fatal(err)
-		}
-	}
-	fmt.Println("Connexion réussi !")
-	return client
-}
-
+// commande du publisher en cmd => .\publisher.exe [sensorId] [iata] [sensorType] 
 func main() {
-	client := connect("tcp://localhost:1883", "123")
+	args := os.Args
+
+	sensorId, err := strconv.Atoi(args[1])
+	iata := args[2]
+	sensorType := args[3]
+
+
+	
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println(" => le type de l'ID n'est pas un int")
+		os.Exit((1))
+	}
+
+	// fmt.Println("tout va bien\n")
+
+	// fmt.Println("sensorid =" , sensorId )
+	// fmt.Println("sensortype = " + sensorType)
+	// fmt.Println("iata = " + iata)
+	
+	client := mosquitto.Connect("tcp://localhost:1883", "123")
 
 	var start time.Time
 	var duration float64
 	var timeToWait time.Duration
 
+	// topic aeroports/iata/sensorType/
+	// données : sensorId + iata + sensorType + valeur  + YYY-MM-DD-mm-ss
 	for {
 		start = time.Now()
-		token := client.Publish("a/b/c", 0, false, "Test golang")
+		token := client.Publish(
+			// "aeropots/" + iata + "/" + sensorType,
+			"a/b/c",
+			0,
+			false,
+			strconv.Itoa(sensorId),
+		)
 		token.Wait()
 		token.Error()
-		fmt.Println("Message envoyé sur le topic : a/b/c")
+		fmt.Println("Message envoyé sur le topic : " + "aeropots/" + iata + "/" + sensorType)
 		duration = time.Now().Sub(start).Seconds()
 		timeToWait = time.Duration(10 - int(duration))
 		time.Sleep(timeToWait * time.Second)
-
 	}
-
 }
