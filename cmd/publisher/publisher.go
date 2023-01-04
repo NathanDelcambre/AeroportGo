@@ -39,9 +39,8 @@ func main() {
 
 	for {
 		start = time.Now()
-		token := client.Publish("a/b/c", 0, false, "Test golang")
+		token := client.Publish("a/b/c", 0, false, "")
 		token.Wait()
-		token.Error()
 		fmt.Println("Message envoyé sur le topic : a/b/c")
 		duration = time.Now().Sub(start).Seconds()
 		timeToWait = time.Duration(10 - int(duration))
