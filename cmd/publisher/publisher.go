@@ -63,6 +63,7 @@ func main() {
 		value = math.Round(sensor.GenerateNextData()*100)/100
 
 		start = time.Now()
+
 		token := client.Publish(
 			"airports/" + iata + "/" + sensorType,
 			2,
@@ -76,6 +77,7 @@ func main() {
 		fmt.Println("Message envoyé : " + strconv.Itoa(sensorId) + ":" + iata + ":"  + sensorType + ":"  + strconv.FormatFloat(value, 'f', -1, 64) + ":"  + date + "\n" + 
 					"Sur le topic : " + "airports/" + iata + "/" + sensorType)
 		
+
 		duration = time.Now().Sub(start).Seconds()
 		timeToWait = time.Duration(10 - int(duration))
 		time.Sleep(timeToWait * time.Second)
