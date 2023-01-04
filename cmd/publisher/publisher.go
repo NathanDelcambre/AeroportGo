@@ -14,9 +14,10 @@ import (
 func main() {
 	args := os.Args
 
-	sensorId, err := strconv.Atoi(args[1])
-	iata := args[2]
-	sensorType := args[3]
+	ipAndPort := args[1]
+	sensorId, err := strconv.Atoi(args[2])
+	iata := args[3]
+	sensorType := args[4]
 
 
 	
@@ -31,8 +32,8 @@ func main() {
 	// fmt.Println("sensorid =" , sensorId )
 	// fmt.Println("sensortype = " + sensorType)
 	// fmt.Println("iata = " + iata)
-	
-	client := mosquitto.Connect("tcp://localhost:1883", "123")
+
+	client := mosquitto.Connect("tcp://" + ipAndPort, "123")
 
 	var start time.Time
 	var duration float64
