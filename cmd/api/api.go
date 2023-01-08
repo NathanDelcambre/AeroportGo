@@ -46,7 +46,7 @@ func get(connexion redis.Conn, _key string) string {
 	key := _key
 	s, err := redis.String(connexion.Do("GET", key))
 	if err == redis.ErrNil {
-		fmt.Printf("%s : Alert! this Key does not exist\n", key)
+	fmt.Printf("[%s] - Alert! this Key does not exist\n", key)
 	} else if err != nil {
 		fmt.Printf("%s : Error! %s\n", key, err)
 	} else {
@@ -154,7 +154,7 @@ func getAverageBetweenTwoTimeValues(w http.ResponseWriter, r *http.Request){
 
 func getData_between_twoTimeValues(t1 time.Time, t2 time.Time, airportParam string, typeCapteur string, idCapteur string, w http.ResponseWriter) string {
 	// Initialisation d'un objet json
-	result := "{["
+	result := "{ \"data\": ["
 	for (t1.Before(t2)) {
 		// Affichage de la date en cours de traitement
 		fmt.Println("Date en cours de traitement : "+t1.Format("2006-01-02:15-04-05"))
