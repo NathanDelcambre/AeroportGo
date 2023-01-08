@@ -78,11 +78,16 @@ func main() {
 		return
 	}
 
-	fmt.Println(contains("CDG", data.IATA))
-	// for i := 0; i < len(data.IATA); i++ {
+	iataArray := &data.IATA
+	// fmt.Println(contains("CDG", data.IATA))
+
+	// for i := 0; i < len(*iataArray); i++ {
 		
-	// 	fmt.Println(i, data.IATA[i])
+	// 	fmt.Println()
 	// }
+	for _, data := range *iataArray {
+		fmt.Println(data)
+	}
 
 	var start time.Time
 	var duration float64
