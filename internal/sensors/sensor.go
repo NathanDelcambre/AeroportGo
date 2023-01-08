@@ -16,7 +16,7 @@ type sensorType struct {
 	unit            string
 }
 
-var WindSensor sensorType = sensorType{"Wind", 0.0, 120, 4, 3, 0, "km/h"}
+var WindSensor sensorType = sensorType{"Wind", 0.0, 120, 4, 3, 0, "kt"}
 var HeatSensor sensorType = sensorType{"Heat", -10.0, 35, 0.6, 1.5, 0, "°C"}
 var PressureSensor sensorType = sensorType{"Pressure", 900, 1085.0, 0.8, 3, 0, "hPa"}
 
@@ -24,18 +24,16 @@ type Sensor struct {
 	id                 int
 	airportId          string
 	sensorType         *sensorType
-	waitTime           int
 	lastGeneratedValue float64
 	currentTargetValue float64
 	currentMaxStep     float64
 }
 
-func NewSensor(id int, airportId string, sensorType *sensorType, waitTime int) *Sensor {
+func NewSensor(id int, airportId string, sensorType *sensorType) *Sensor {
 	s := new(Sensor)
 	s.id = id
 	s.airportId = airportId
 	s.sensorType = sensorType
-	s.waitTime = waitTime
 	s.currentTargetValue = 0
 	s.lastGeneratedValue, _ = s.randomSource()
 	s.currentMaxStep = s.sensorType.maxStep
@@ -92,5 +90,4 @@ func (s *Sensor) GenerateNextData() float64 {
 		s.lastGeneratedValue += nextData
 		return s.lastGeneratedValue
 	}
-
 }
