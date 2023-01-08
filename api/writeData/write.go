@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-
+	"strings"
 	"github.com/gomodule/redigo/redis"
 )
 
@@ -34,8 +34,12 @@ func main() {
 	for scanner.Scan() {
 		// Récupération de la ligne
 		line := scanner.Text()
+		// Recuperation de la clé (jusqu'au premier espace)
+		key := line[:strings.Index(line, " ")]
+		// Recuperation de la valeur (après le premier espace)
+		value := line[strings.Index(line, " ")+1:]
 		// Envoi de la commande SET à Redis
-		_, err := conn.Do("SET", line)
+		_, err := conn.Do("SET", key, value)
 		if err != nil {
 			// Gestion de l'erreur si l'envoi de la commande échoue
 			fmt.Println(err)

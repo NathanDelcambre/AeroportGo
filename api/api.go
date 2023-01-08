@@ -176,7 +176,7 @@ func getAverage_between_twoTimeValues(t1 time.Time, t2 time.Time, airportParam s
 		for _, typeCapteur := range types {
 
 			// Creation du tableau des id des capteurs
-			idCapteurs := [3]string{"1", "2", "3"}
+			idCapteurs := [1]string{"1"}
 			// Reinitialisation du tableau des valeurs
 			values = values[:0]
 			// Boucle sur les id des capteurs afin d'obtenir les mesures d'un capteur
@@ -210,7 +210,7 @@ func getAverage_between_twoTimeValues(t1 time.Time, t2 time.Time, airportParam s
 					// Ajout de la valeur au tableau des valeurs
 					values = append(values, dataInt)
 				}
-				t1.Add(time.Second * 10)
+				t1 = t1.Add(time.Second * 10)
 			}
 
 			// Calcul de la moyenne des valeurs
