@@ -14,14 +14,12 @@ import (
 )
 
 type Configuration struct {
-	// Words []string `json:"words"`
 	IATA       []string `json:"iata"`
 	SensorID   []int    `json:"sensorId"`
 	SensorType []string `json:"sensorType"`
 }
 
 func contains(val interface{}, arr interface{}) bool {
-	// Vérifier si la variable est présente dans le tableau
 	arrValue := reflect.ValueOf(arr)
 	for i := 0; i < arrValue.Len(); i++ {
 		if arrValue.Index(i).Interface() == val {
@@ -45,24 +43,6 @@ func contains(val interface{}, arr interface{}) bool {
 **/
 
 func main() {
-	// test read config files
-	// data, err := ioutil.ReadFile("../../internal/conf/conf.json")
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	// var config Configuration
-	// err = json.Unmarshal(data, &config)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	// for _, word := range config.IATA {
-	// 	fmt.Println(word)
-	// }
-
 	file, err := os.Open("../../internal/conf/conf.json")
 	if err != nil {
 		fmt.Println(err)
@@ -70,23 +50,13 @@ func main() {
 	}
 	defer file.Close()
 
+
 	data := Configuration{}
 
 	err = json.NewDecoder(file).Decode(&data)
 	if err != nil {
 		fmt.Println(err)
 		return
-	}
-
-	iataArray := &data.IATA
-	// fmt.Println(contains("CDG", data.IATA))
-
-	// for i := 0; i < len(*iataArray); i++ {
-		
-	// 	fmt.Println()
-	// }
-	for _, data := range *iataArray {
-		fmt.Println(data)
 	}
 
 	var start time.Time
@@ -103,14 +73,25 @@ func main() {
 	sensorType := args[4]
 	qualityOfService, errQoS := strconv.Atoi(args[5])
 
-	fmt.Println(qualityOfService)
-
-	client := mosquitto.Connect("tcp://" + ipAndPort, "123")
-
 	if errSensor != nil {
 		fmt.Println(errSensor)
-		fmt.Println(" => le type de l'ID n'est pas un int")
+		fmt.Println("le type de l'ID n'est pas un int")
 		os.Exit((1))
+	}
+
+	if !contains(sensorId, data.SensorID ) {
+		fmt.Println("sensorId incorrect: choisissez entre 1,2 ou 3")
+		os.Exit(1)
+	}
+
+	if !contains(iata, data.IATA ) {
+		fmt.Println("IATA incorrect")
+		os.Exit(1)
+	}
+
+	if !contains(iata, data.SensorType ) {
+		fmt.Println("SensorType incorrect: utilisez Heat, Wint ou Pressure")
+		os.Exit(1)
 	}
 
 	if errQoS != nil {
@@ -133,7 +114,9 @@ func main() {
 		sensor = sensors.NewSensor(sensorId, iata, &sensors.PressureSensor)
 		value = math.Round(sensor.GenerateNextData()*100)/100
 	}
+	
 	date = time.Now().Format("2006-01-02-15-04-05")
+	client := mosquitto.Connect("tcp://" + ipAndPort, "123")
 
 	for {
 		value = math.Round(sensor.GenerateNextData()*100)/100
