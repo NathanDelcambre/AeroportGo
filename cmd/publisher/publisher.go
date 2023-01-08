@@ -57,9 +57,10 @@ func main() {
 		sensor = sensors.NewSensor(sensorId, iata, &sensors.PressureSensor)
 		value = math.Round(sensor.GenerateNextData()*100)/100
 	}
-	date = time.Now().Format("2006-01-02-15-04-05")
+
 
 	for {
+		date = time.Now().Format("2006-01-02-15-04-05")
 		value = math.Round(sensor.GenerateNextData()*100)/100
 
 		start = time.Now()
