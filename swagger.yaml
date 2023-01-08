@@ -95,3 +95,5 @@ paths:
                 type: "integer"
         400:
           description: "Invalid request parameters"
+        404:
+          desription: "Not Found"
