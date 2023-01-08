@@ -1,0 +1,19 @@
+{
+	"iata": [
+		"CDG",
+		"NTE"
+	],
+
+	"sensorId": [
+		1,
+		2,
+		3
+	],
+
+	"sensorType": [
+		"Wind",
+		"Heat",
+		"Pressure"
+	]
+
+}
