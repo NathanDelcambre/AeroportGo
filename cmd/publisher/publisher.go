@@ -115,10 +115,11 @@ func main() {
 		value = math.Round(sensor.GenerateNextData()*100)/100
 	}
 	
-	date = time.Now().Format("2006-01-02-15-04-05")
+
 	client := mosquitto.Connect("tcp://" + ipAndPort, "123")
 
 	for {
+		date = time.Now().Format("2006-01-02-15-04-05")
 		value = math.Round(sensor.GenerateNextData()*100)/100
 
 		start = time.Now()
