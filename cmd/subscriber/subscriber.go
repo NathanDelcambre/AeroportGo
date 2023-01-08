@@ -52,6 +52,15 @@ func messageHandler(client mqtt.Client, message mqtt.Message) {
 	conn.Do("SET", "airport:"+values[1]+":"+values[4]+":"+values[2]+":value", values[3]+":"+values[0])
 	// id du capteur : iata : sensor type : value : timestamp
 
+
+}
+
+// To do
+// Envoie les data dans un fichier de log csv
+func dataToLog(values string) {
+	
+	// filePath := filepath.Join("..", "..","internal", "logs", values + ".csv")
+	// "airport:"+values[1]+";"+values[4]+";"+values[2]+";value", values[3]+";"+values[0]
 }
 
 func main() {
