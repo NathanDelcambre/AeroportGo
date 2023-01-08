@@ -22,9 +22,10 @@ func main() {
 
 	// Initialisation de la date et de l'heure de départ
 	t := time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)
+	t2 := time.Date(2023, time.January, 2, 0, 0, 0, 0, time.UTC)
 
 	// Boucle qui itère tant que l'heure est avant 23h59m59s
-	for t.Hour() < 23 {
+	for t.Before(t2) {
 		// Création du tableau des types de capteurs
 		types := [3]string{"Heat", "Pressure", "Wind"}
 
