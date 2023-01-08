@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Airport ID</th>
+        <th>Last Generated Time</th>
+        <th>Sensor Type</th>
+        <th>ID</th>
+        <th>Last Generated Value</th>
+      </tr>
+      {{ range . }}
+      <tr>
+        <td>{{ .AirportID }}</td>
+        <td>{{ .LastGeneratedTime }}</td>
+        <td>{{ .SensorType }}</td>
+        <td>{{ .ID }}</td>
+        <td>{{ .LastGeneratedValue }}</td>
+      </tr>
+      {{ end }}
+    </table>
+  </body>
+</html>
