@@ -47,6 +47,8 @@ paths:
                   type: "integer"
         400:
           description: "Invalid request parameters"
+        404:
+          description: "Not values found"
   /getAverageBetweenTimeValues:
     get:
       summary: "Retrieve average sensor data for a given time range and airport"
@@ -93,3 +95,5 @@ paths:
                 type: "integer"
         400:
           description: "Invalid request parameters"
+        404:
+          description: "Not values found"
