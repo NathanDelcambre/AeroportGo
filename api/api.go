@@ -135,7 +135,7 @@ func getAverageBetweenTwoTimeValues(w http.ResponseWriter, r *http.Request){
 	}
 	
 	// Récupération des données en fonction des deux objets time et de l'aeroport
-	data := getAverage_between_twoTimeValues(t1, t2, airportParam)
+	data := getAverage_between_twoTimeValues(t1, t2, airportParam, w)
 	// Envoi de la donnée au client
 	w.Write([]byte(data))
 }
@@ -159,7 +159,7 @@ func getData_between_twoTimeValues(t1 time.Time, t2 time.Time, airportParam stri
 }
 
 
-func getAverage_between_twoTimeValues(t1 time.Time, t2 time.Time, airportParam string) string {
+func getAverage_between_twoTimeValues(t1 time.Time, t2 time.Time, airportParam string, w http.ResponseWriter) string {
 
 	
 	// Creation et initilisation du tableau des valeurs vide
@@ -185,28 +185,32 @@ func getAverage_between_twoTimeValues(t1 time.Time, t2 time.Time, airportParam s
 				// Affichage de la date en cours de traitement
 				fmt.Println("Date en cours de traitement : "+t1.Format("2006-01-02:15-04-05"))
 				// Creation de la clé de recherche
-				key := "airport:"+airportParam + ":" + t1.Format("2006-01-02:15-04-00")+":"+typeCapteur+":"+idCapteur
+				key := "airport:"+airportParam + ":" + t1.Format("2006-01-02:15-04-05")+":"+typeCapteur+":"+idCapteur
 				// Récupération des données
 				data := get(connexionName,key)
 				// Conversion de la donnée en int
 				dataInt, err := strconv.Atoi(data)
-				for  {	
-					// Récupération des nouvelles données
-					data = get(connexionName,key)
-					// Conversion de la donnée en int
-					dataInt, err = strconv.Atoi(data)
-					if ((err != nil)) {
-						// Gestion de l'erreur si la conversion en int échoue
-						break
+				// si la conversion renvoie une erreur, on augmente de la date d'une seconde un maximum de neuf fois jusqu'a atteindre une valeur valide, sinon on renvoie une erreur 400
+				if err != nil {
+					for i := 0; i < 9; i++ {
+						t1 = t1.Add(time.Second * 1)
+						key := "airport:"+airportParam + ":" + t1.Format("2006-01-02:15-04-05")+":"+typeCapteur+":"+idCapteur
+						data := get(connexionName,key)
+						dataInt, err := strconv.Atoi(data)
+						if err == nil {
+							values = append(values, dataInt)
+							break
+						}
 					}
-					// ajout d'une seconde en cas de clé inexistante pour maintenir la cohérence des données
-					t1 = t1.Add(time.Second)
+					if err != nil {
+						http.Error(w, "400 - BAD REQUEST", http.StatusBadRequest)
+						return "No values for this date, please provide valid parameter [dateParam1 - INVALID ]"
+					}
+				} else {
+					// Ajout de la valeur au tableau des valeurs
+					values = append(values, dataInt)
 				}
-				// Ajout de la donnée au résultat
-				values = append(values, dataInt)
-				// Incrémentation de la date
-				t1 = t1.Add(time.Second * 10)
-
+				t1.Add(time.Second * 10)
 			}
 
 			// Calcul de la moyenne des valeurs
@@ -241,8 +245,10 @@ func getAverageAsString(values []int) string {
 		// Incrémentation du compteur
 		count++
 	}
-	// Calcul de la moyenne
+	if count != 0 {
+		// Calcul de la moyenne
 	result = result / count
+	} 
 	// Conversion du résultat en string
 	resultString := strconv.Itoa(result)
 	// Retour du résultat
