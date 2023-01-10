@@ -16,9 +16,9 @@ type sensorType struct {
 	unit            string
 }
 
-var WindSensor sensorType = sensorType{"Wind", 0.0, 120, 4, 3, 0, "km/h"}
-var HeatSensor sensorType = sensorType{"Heat", -10.0, 35, 0.6, 1.5, 0, "°C"}
-var PressureSensor sensorType = sensorType{"Pressure", 900, 1085.0, 0.8, 3, 0, "hPa"}
+var WindSensor sensorType = sensorType{"Wind", 0.0, 90, 4, 10, 0, "kt"}
+var HeatSensor sensorType = sensorType{"Heat", -10.0, 25, 0.6, 8, 0, "°C"}
+var PressureSensor sensorType = sensorType{"Pressure", 900.0, 1030, 1.5, 50, 0, "hPa"}
 
 type Sensor struct {
 	id                 int
@@ -34,7 +34,7 @@ func NewSensor(id int, airportId string, sensorType *sensorType) *Sensor {
 	s.id = id
 	s.airportId = airportId
 	s.sensorType = sensorType
-	s.currentTargetValue = 0
+	s.currentTargetValue = s.sensorType.minValue + ((s.sensorType.maxValue - s.sensorType.minValue) / 2)
 	s.lastGeneratedValue, _ = s.randomSource()
 	s.currentMaxStep = s.sensorType.maxStep
 	return s
@@ -46,7 +46,8 @@ func (s *Sensor) randomSource() (float64, float64) {
 	return (s.sensorType.minValue + r*(s.sensorType.maxValue+math.Abs(s.sensorType.minValue))), r
 }
 
-func (s *Sensor) defineNewTarget() { // use with v3
+func (s *Sensor) defineNewTarget() {
+
 	_, rand := s.randomSource()
 	rand = rand*2.0 - 1.0 // Pour avoir des valeurs négative
 	temp := s.currentTargetValue
@@ -90,5 +91,4 @@ func (s *Sensor) GenerateNextData() float64 {
 		s.lastGeneratedValue += nextData
 		return s.lastGeneratedValue
 	}
-
 }
